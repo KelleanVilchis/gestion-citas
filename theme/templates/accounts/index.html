@@ -1,0 +1,292 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="space-y-8 animate-fade-in">
+    
+    <div class="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-3xl p-6 sm:p-8 text-white shadow-lg shadow-indigo-100">
+        <h1 class="text-3xl font-extrabold tracking-tight">¡Hola de nuevo, {{ request.user.first_name|default:request.user.username }}! 👋</h1>
+        <p class="text-indigo-100 text-sm mt-2 max-w-md">Bienvenido a tu panel de control. Aquí tienes el estado actual del sistema y los accesos rápidos a tus módulos.</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm flex items-center space-x-4">
+            <div class="p-3.5 bg-indigo-50 text-indigo-600 rounded-xl text-2xl">👥</div>
+            <div>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Usuarios Activos</p>
+                <h3 class="text-2xl font-black text-slate-800 mt-0.5">{{ total_usuarios }}</h3>
+            </div>
+        </div>
+
+        <div class="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm flex items-center space-x-4">
+            <div class="p-3.5 bg-emerald-50 text-emerald-600 rounded-xl text-2xl">📅</div>
+            <div>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Citas para Hoy</p>
+                <h3 class="text-2xl font-black text-slate-800 mt-0.5">0</h3>
+            </div>
+        </div>
+
+        <div class="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm flex items-center space-x-4 sm:col-span-2 lg:col-span-1">
+            <div class="p-3.5 bg-amber-50 text-amber-500 rounded-xl text-2xl">📈</div>
+            <div>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Rendimiento</p>
+                <h3 class="text-2xl font-black text-slate-800 mt-0.5">100% óptimo</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="space-y-4">
+        <h2 class="text-xl font-bold text-slate-900 tracking-tight">⚡ Accesos Directos del Sistema</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <span>👥</span> Gestión de Usuarios
+                    </h3>
+                    <p class="text-slate-500 text-sm mt-2">Administra el personal del sistema, doctores, secretarios y pacientes. Da de alta, edita información o da de baja cuentas.</p>
+                </div>
+                <div class="mt-5 pt-4 border-t border-slate-50">
+                    <a href="{% url 'accounts:user_list' %}" class="inline-flex items-center text-sm font-semibold text-indigo-600 hover:text-indigo-800">
+                        Ir al CRUD de Usuarios →
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <span>🗓️</span> Agenda de Citas
+                    </h3>
+                    <p class="text-slate-500 text-sm mt-2">Revisa el calendario global del consultorio, agenda nuevas citas médicas para pacientes o modifica horarios existentes.</p>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="space-y-6 mt-16 pb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-900 tracking-tight">👥 Lista de Usuarios del Sistema</h2>
+                <p class="text-slate-500 text-sm mt-1">Gestión completa de todos los usuarios registrados</p>
+            </div>
+        </div>
+        
+        <div class="bg-white border border-slate-200 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-slate-50 to-slate-100 border-b-2 border-slate-200">
+                            <th class="px-8 py-5 text-left text-xs font-extrabold text-slate-700 uppercase tracking-wider">👤 Nombre</th>
+                            <th class="px-8 py-5 text-left text-xs font-extrabold text-slate-700 uppercase tracking-wider">✉️ Email</th>
+                            <th class="px-8 py-5 text-left text-xs font-extrabold text-slate-700 uppercase tracking-wider">🏷️ Tipo</th>
+                            <th class="px-8 py-5 text-left text-xs font-extrabold text-slate-700 uppercase tracking-wider">📊 Estado</th>
+                            <th class="px-8 py-5 text-center text-xs font-extrabold text-slate-700 uppercase tracking-wider">⚙️ Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        {% for usuario in usuarios %}
+                        <tr class="hover:bg-gradient-to-r hover:from-indigo-50 hover:to-violet-50 transition-all duration-200 border-slate-100" data-user-id="{{ usuario.pk }}">
+                            <td class="px-8 py-6 text-sm font-semibold text-slate-900">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-violet-500 flex items-center justify-center text-white font-bold text-sm">
+                                        {{ usuario.first_name|first|upper }}{{ usuario.last_name|first|upper }}
+                                    </div>
+                                    <div>
+                                        <p class="text-slate-900 font-bold">{{ usuario.first_name }} {{ usuario.last_name }}</p>
+                                        <p class="text-xs text-slate-400">@{{ usuario.username }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-8 py-6 text-sm text-slate-600 font-medium">
+                                {{ usuario.email }}
+                            </td>
+                            <td class="px-8 py-6 text-sm">
+                                <span class="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold
+                                    {% if usuario.user_type == 'doctor' %}
+                                        bg-blue-100 text-blue-700 border border-blue-300
+                                    {% elif usuario.user_type == 'secretary' %}
+                                        bg-purple-100 text-purple-700 border border-purple-300
+                                    {% elif usuario.user_type == 'patient' %}
+                                        bg-emerald-100 text-emerald-700 border border-emerald-300
+                                    {% else %}
+                                        bg-gray-100 text-gray-700 border border-gray-300
+                                    {% endif %}
+                                ">
+                                    {{ usuario.get_user_type_display }}
+                                </span>
+                            </td>
+                            <td class="px-8 py-6 text-sm font-semibold">
+                                {% if usuario.is_active %}
+                                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-300">
+                                        <span class="w-2 h-2 bg-emerald-600 rounded-full animate-pulse"></span>
+                                        Activo
+                                    </span>
+                                {% else %}
+                                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-red-100 text-red-700 border border-red-300">
+                                        <span class="w-2 h-2 bg-red-600 rounded-full"></span>
+                                        Inactivo
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td class="px-8 py-6 text-sm font-semibold">
+                                <div class="flex items-center justify-center gap-2">
+                                    <a href="{% url 'accounts:user_show' usuario.pk %}" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 font-semibold text-xs border border-blue-200 transition-all duration-200 hover:shadow-md" title="Ver">
+                                        👁️ Ver
+                                    </a>
+                                    <a href="{% url 'accounts:user_update' usuario.pk %}" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100 font-semibold text-xs border border-indigo-200 transition-all duration-200 hover:shadow-md" title="Editar">
+                                        ✏️ Editar
+                                    </a>
+                                    <button type="button" onclick="openDeleteModal({{ usuario.pk }}, '{{ usuario.first_name }} {{ usuario.last_name }}')" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 font-semibold text-xs border border-red-200 transition-all duration-200 hover:shadow-md cursor-pointer" title="Eliminar">
+                                        🗑️ Eliminar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="px-8 py-16 text-center">
+                                <div class="flex flex-col items-center justify-center space-y-3">
+                                    <div class="text-5xl">📭</div>
+                                    <p class="text-slate-500 font-semibold">No hay usuarios registrados en el sistema.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmación de Eliminación -->
+<div id="deleteModal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl transform transition-all">
+        <div class="bg-gradient-to-r from-red-500 to-red-600 px-8 py-12 rounded-t-3xl text-center">
+            <h3 class="text-4xl font-black text-white flex items-center justify-center gap-3">
+                <span class="text-6xl">⚠️</span> Confirmar Eliminación
+            </h3>
+        </div>
+        <div class="px-8 py-12 space-y-6 text-center">
+            <p class="text-2xl text-slate-900 font-bold">¿Estás seguro de que deseas eliminar a <span class="text-red-600" id="userNameDisplay"></span>?</p>
+            <p class="text-lg text-slate-600">Esta acción <strong>no se puede deshacer</strong>. El usuario será eliminado del sistema de forma permanente e irrecuperable.</p>
+            <div class="bg-red-50 border-2 border-red-200 rounded-xl p-4 mt-6">
+                <p class="text-sm text-red-700">⚠️ Ten cuidado: Esta es una acción destructiva y permanente.</p>
+            </div>
+        </div>
+        <div class="bg-slate-50 px-8 py-6 rounded-b-3xl flex gap-4 justify-center border-t-2 border-slate-200">
+            <button type="button" onclick="closeDeleteModal()" class="px-8 py-3 rounded-lg bg-slate-300 text-slate-800 font-bold text-base hover:bg-slate-400 transition-all transform hover:scale-105">
+                ❌ Cancelar
+            </button>
+            <button type="button" id="confirmDeleteBtn" onclick="confirmDelete()" class="px-8 py-3 rounded-lg bg-red-600 text-white font-bold text-base hover:bg-red-700 transition-all transform hover:scale-105 flex items-center gap-2">
+                <span class="text-xl">🗑️</span> Sí, Eliminar Definitivamente
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentDeleteUserId = null;
+
+function openDeleteModal(userId, userName) {
+    currentDeleteUserId = userId;
+    document.getElementById('userNameDisplay').textContent = userName;
+    document.getElementById('deleteModal').classList.remove('hidden');
+    document.getElementById('deleteModal').classList.add('flex');
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.add('hidden');
+    document.getElementById('deleteModal').classList.remove('flex');
+    currentDeleteUserId = null;
+}
+
+function confirmDelete() {
+    if (!currentDeleteUserId) return;
+    
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    confirmBtn.disabled = true;
+    confirmBtn.innerHTML = '<span class="text-lg">⏳</span> Eliminando...';
+    
+    // Obtener el token CSRF desde la cookie
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
+                      getCookie('csrftoken');
+    
+    fetch(`/accounts/user/delete/${currentDeleteUserId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({})
+    })
+    .then(response => {
+        if (response.ok || response.status === 302) {
+            // Eliminar la fila de la tabla
+            const row = document.querySelector(`tr[data-user-id="${currentDeleteUserId}"]`);
+            if (row) {
+                row.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => {
+                    row.remove();
+                    // Verificar si la tabla está vacía
+                    const tbody = row.closest('tbody');
+                    if (tbody.children.length === 0) {
+                        location.reload();
+                    }
+                }, 300);
+            }
+            closeDeleteModal();
+        } else {
+            alert('Error al eliminar el usuario. Por favor intenta de nuevo.');
+            confirmBtn.disabled = false;
+            confirmBtn.innerHTML = '<span class="text-lg">🗑️</span> Eliminar';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al conectar con el servidor.');
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = '<span class="text-lg">🗑️</span> Eliminar';
+    });
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Agregar animación CSS
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+    }
+`;
+document.head.appendChild(style);
+
+// Cerrar modal al hacer clic fuera de él
+document.getElementById('deleteModal').addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeDeleteModal();
+    }
+});
+</script>
+{% endblock content %}
