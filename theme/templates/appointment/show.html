@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo_pagina }}{% endblock %}
+
+{% block content %}
+<div class="bg-white shadow rounded p-6">
+    <h2 class="text-xl font-semibold mb-2">Cita de {{ appointment.customer.get_full_name|default:appointment.customer.username }}</h2>
+    <p class="text-sm text-slate-600 mb-4">{{ appointment.date }}</p>
+
+    <div class="mb-4">
+        <h3 class="font-medium">Descripción</h3>
+        <p>{{ appointment.description }}</p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+        <div>
+            <strong>Precio:</strong> {{ appointment.price }}
+        </div>
+        <div>
+            <strong>Método de pago:</strong> {{ appointment.get_payment_method_display }}
+        </div>
+    </div>
+
+    <div class="mt-6">
+        <a href="{% url 'appointments:appointment_edit' appointment.pk %}" class="text-yellow-600">Editar</a>
+        <a href="{% url 'appointments:appointment_list' %}" class="ml-4 text-slate-600">Volver a la lista</a>
+    </div>
+</div>
+
+{% endblock content %}

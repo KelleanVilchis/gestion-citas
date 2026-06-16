@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-semibold">{{ titulo }}</h1>
+    <a href="{% url 'appointments:appointment_create' %}" class="bg-indigo-600 text-white px-3 py-2 rounded">Crear Cita</a>
+</div>
+
+<div class="bg-white shadow rounded p-4">
+    <table class="w-full text-left">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Descripción</th>
+                <th>Fecha</th>
+                <th>Precio</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in appointments %}
+            <tr class="border-t">
+                <td>{{ a.customer.get_full_name|default:a.customer.username }}</td>
+                <td>{{ a.description|truncatechars:40 }}</td>
+                <td>{{ a.date }}</td>
+                <td>{{ a.price }}</td>
+                <td>{{ a.get_status_display }}</td>
+                <td>
+                    <a href="{% url 'appointments:appointment_show' a.pk %}" class="text-indigo-600">Ver</a>
+                    |
+                    <a href="{% url 'appointments:appointment_edit' a.pk %}" class="text-yellow-600">Editar</a>
+                    |
+                    <form method="post" action="{% url 'appointments:appointment_delete' a.pk %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-600">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No hay citas registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content %}

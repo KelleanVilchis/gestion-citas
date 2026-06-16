@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'apps.accounts',
+    'apps.appointments',
 ]
 TAILWIND_APP_NAME = 'theme'
 AUTH_USER_MODEL = 'accounts.AppUser'
@@ -49,7 +50,6 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 🌟 AQUÍ ESTÁ EL TRUCO: Dile a Django que busque en tu carpeta global de templates
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
