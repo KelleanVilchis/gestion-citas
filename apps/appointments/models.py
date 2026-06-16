@@ -15,6 +15,7 @@ class PaymentMethod(models.TextChoices):
 
 
 class Appointment(models.Model):
+    code_appointment = models.CharField(max_length=8, unique=True, null=True, blank=True)
     customer = models.ForeignKey(AppUser, on_delete=models.CASCADE)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
