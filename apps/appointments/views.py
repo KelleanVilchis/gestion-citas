@@ -5,6 +5,14 @@ from .models import Appointment
 from .forms import AppointmentCreateForm, AppointmentUpdateForm
 
 
+class HomeView(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'titulo_pagina': 'Home - Barber & Studio'
+        }
+        return render(request, 'appointment/home.html', context)
+	
+
 class AppointmentListView(LoginRequiredMixin, View):
 	def get(self, request, *args, **kwargs):
 		context = {
