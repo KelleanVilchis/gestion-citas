@@ -30,7 +30,7 @@ class LoginView(View):
             user = AppUserBackend().authenticate(request, email=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('accounts:usuario_list')
+                return redirect('accounts:user_list')
             else:
                 messages.error(request,'Email o password incorrecto.')
                 return render(request, 'accounts/login.html', {'form': form})

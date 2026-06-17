@@ -1,0 +1,105 @@
+{% if appointment %}
+<!-- Contenedor al ras (Elimina márgenes y se une perfectamente a la tarjeta de arriba) -->
+<div class="w-full mt-0 bg-white rounded-b-3xl border-x border-b border-slate-200 p-5 sm:p-8 shadow-xl shadow-slate-200/40 animate-fade-in">
+    
+    <!-- Encabezado Formal Adaptable -->
+    <div class="flex flex-col sm:flex-row gap-4 sm:items-center justify-between border-b border-slate-100 pb-5 mb-6">
+        <div>
+            <p class="text-[10px] font-bold tracking-wider text-slate-400 uppercase">Estado de la Solicitud</p>
+            {% if appointment.status == 'completed' %}
+                <h4 class="text-base font-bold text-emerald-600 mt-1 flex items-center gap-1.5">
+                    <span class="h-2 w-2 rounded-full bg-emerald-500 inline-block"></span> Cita Completada
+                </h4>
+            {% elif appointment.status == 'scheduled' %}
+                <h4 class="text-base font-bold text-indigo-600 mt-1 flex items-center gap-1.5">
+                    <span class="h-2 w-2 rounded-full bg-indigo-500 inline-block"></span> Cita Programada
+                </h4>
+            {% elif appointment.status == 'canceled' %}
+                <h4 class="text-base font-bold text-rose-600 mt-1 flex items-center gap-1.5">
+                    <span class="h-2 w-2 rounded-full bg-rose-500 inline-block"></span> Cita Cancelada
+                </h4>
+            {% else %}
+                <h4 class="text-base font-bold text-slate-600 mt-1 flex items-center gap-1.5">
+                    <span class="h-2 w-2 rounded-full bg-slate-500 inline-block"></span> {{ appointment.status|capfirst }}
+                </h4>
+            {% endif %}
+        </div>
+        <div class="sm:text-right">
+            <span class="text-[10px] font-bold tracking-wider text-slate-400 uppercase block">Código Único</span>
+            <span class="text-lg font-black text-slate-900 tracking-tight mt-0.5 block">{{ appointment.code_appointment }}</span>
+        </div>
+    </div>
+
+    <!-- Panel Informativo Totalmente Simétrico -->
+    <div class="space-y-5 text-base border-b border-slate-100 pb-6 mb-6">
+        
+        <!-- Bloque: Cliente -->
+        <div class="flex flex-col sm:grid sm:grid-cols-3 sm:items-center gap-1 sm:gap-4">
+            <span class="text-xs font-bold tracking-wider text-slate-400 uppercase sm:normal-case sm:text-slate-400 sm:font-medium">Titular</span>
+            <span class="sm:col-span-2 font-bold text-slate-800 text-base sm:text-lg">
+                {% if appointment.customer %}{{ appointment.customer.username }}{% else %}{{ appointment.guest_name }}{% endif %}
+            </span>
+        </div>
+        
+        <!-- Bloque: Horario (Corregido para que no se rompa el diseño del badge) -->
+        <div class="flex flex-col sm:grid sm:grid-cols-3 sm:items-center gap-2 sm:gap-4">
+            <span class="text-xs font-bold tracking-wider text-slate-400 uppercase sm:normal-case sm:text-slate-400 sm:font-medium">Horario</span>
+            <div class="sm:col-span-2 flex flex-wrap gap-2">
+                <span class="bg-slate-50 text-slate-800 font-bold px-3 py-1.5 rounded-xl border border-slate-200 text-sm whitespace-nowrap">
+                    {{ appointment.appointment_date|date:"d \d\e F, Y" }}
+                </span>
+                <span class="bg-slate-50 text-slate-800 font-bold px-3 py-1.5 rounded-xl border border-slate-200 text-sm whitespace-nowrap">
+                    {{ appointment.appointment_time|time:"H:i" }} hrs
+                </span>
+            </div>
+        </div>
+
+        <!-- Bloque: Contacto -->
+        <div class="flex flex-col sm:grid sm:grid-cols-3 sm:items-center gap-1 sm:gap-4">
+            <span class="text-xs font-bold tracking-wider text-slate-400 uppercase sm:normal-case sm:text-slate-400 sm:font-medium">Teléfono</span>
+            <span class="sm:col-span-2 font-semibold text-slate-700 text-base">{{ appointment.guest_phone }}</span>
+        </div>
+
+        <!-- Bloque: Detalle del Servicio -->
+        <div class="flex flex-col sm:grid sm:grid-cols-3 sm:items-start gap-2 sm:gap-4">
+            <span class="text-xs font-bold tracking-wider text-slate-400 uppercase sm:normal-case sm:text-slate-400 sm:font-medium sm:pt-1">Detalles</span>
+            <div class="sm:col-span-2 w-full bg-slate-50 border border-slate-200 p-4 rounded-2xl">
+                <p class="text-slate-700 text-sm font-medium leading-relaxed">
+                    {{ appointment.description|default:"No se especificaron detalles adicionales para este servicio." }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Balance / Importe Total (Diseño formal tipo factura) -->
+    <div class="flex flex-col sm:flex-row gap-3 sm:items-center justify-between bg-slate-50 border border-slate-200 rounded-2xl p-5">
+        <div>
+            <span class="text-xs uppercase tracking-wider text-slate-400 block font-bold">Importe Total</span>
+            <span class="text-xs text-slate-500 font-medium">Método registrado: {{ appointment.get_payment_method_display }}</span>
+        </div>
+        <div class="text-left sm:text-right">
+            <span class="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">S/ {{ appointment.price }}</span>
+        </div>
+    </div>
+
+    <!-- Registro / Auditoría de pie de página -->
+    <div class="mt-5 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between text-[11px] text-slate-400 font-medium">
+        <span>Sistema de Gestión BarberShop</span>
+        <span><b>Registro:</b> {{ appointment.created_at|date:"d/m/Y H:i" }}</span>
+    </div>
+</div>
+
+{% else %}
+<!-- Alerta formal al ras optimizada para móviles -->
+<div class="w-full mt-0 bg-white rounded-b-3xl border-x border-b border-amber-200 p-6 shadow-xl shadow-amber-100/20 text-center animate-fade-in">
+    <div class="inline-flex p-2 bg-amber-50 rounded-full text-amber-600 mb-3 border border-amber-100">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+        </svg>
+    </div>
+    <h4 class="text-sm font-bold text-slate-900">Documento no localizado</h4>
+    <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-xs mx-auto leading-relaxed">
+        El parámetro "<span class="font-bold text-amber-800">{{ query }}</span>" no coincide con ninguna cita en el sistema. Verifique los datos ingresados.
+    </p>
+</div>
+{% endif %}

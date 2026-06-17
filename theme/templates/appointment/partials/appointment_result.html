@@ -1,0 +1,48 @@
+{% if appointment %}
+    <div class="bg-white border-l-4 border-emerald-500 rounded-2xl shadow-lg p-6 space-y-4 animate-slide-down">
+        <div class="flex justify-between items-start border-b border-slate-50 pb-3">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Appointment Code</span>
+                <h3 class="text-xl font-black text-slate-800 uppercase tracking-wide">{{ appointment.code_appointment }}</h3>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-100 uppercase">
+                {{ appointment.status }}
+            </span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+                <span class="text-xs text-slate-400 block font-medium">Customer Name</span>
+                <span class="font-bold text-slate-800">{{ appointment.guest_name|default:appointment.customer.get_full_name }}</span>
+            </div>
+            <div>
+                <span class="text-xs text-slate-400 block font-medium">Contact Phone</span>
+                <span class="font-semibold text-slate-600">{{ appointment.guest_phone|default:"N/A" }}</span>
+            </div>
+            <div class="mt-2">
+                <span class="text-xs text-slate-400 block font-medium">📅 Date</span>
+                <span class="font-bold text-indigo-600">{{ appointment.appointment_date|date:"l, d F Y" }}</span>
+            </div>
+            <div class="mt-2">
+                <span class="text-xs text-slate-400 block font-medium">⏰ Time</span>
+                <span class="font-bold text-indigo-600">{{ appointment.appointment_time|time:"H:i A" }}</span>
+            </div>
+        </div>
+    </div>
+
+{% else %}
+    <div class="bg-red-50 border border-red-200 rounded-2xl p-4 text-center space-y-1 animate-slide-down">
+        <p class="text-sm font-bold text-red-700">No appointment found</p>
+        <p class="text-xs text-red-500">Double check your code or phone number and try again.</p>
+    </div>
+{% endif %}
+
+<style>
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-slide-down {
+        animation: slideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+</style>

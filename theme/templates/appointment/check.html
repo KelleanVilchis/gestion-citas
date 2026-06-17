@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo_pagina }}{% endblock %}
+
+{% block content %}
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+<div class="max-w-xl mx-auto space-y-8 py-10 animate-fade-in">
+
+    <div>
+        <a href="{% url 'appointments:home' %}" class="inline-flex items-center text-sm font-semibold text-slate-500 hover:text-indigo-600 transition-colors">
+            ← Back to main menu
+        </a>
+    </div>
+
+    <div class="bg-white border border-slate-100 rounded-3xl shadow-xl p-6 sm:p-8 text-center space-y-6">
+        <div>
+            <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                🔍
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Find Your Appointment</h2>
+            <p class="text-sm text-slate-400 mt-1">Enter your appointment code or the phone number you used to book.</p>
+        </div>
+
+        <form hx-post="{% url 'appointments:search_ajax' %}" 
+              hx-target="#result-container" 
+              hx-indicator="#loading-indicator"
+              class="space-y-4 standard-django-form">
+            {% csrf_token %}
+            
+            <div class="relative">
+                {{ form.search_query }}
+            </div>
+
+            <button type="submit" class="w-full bg-slate-900 hover:bg-indigo-600 text-white font-medium py-3 px-4 rounded-xl shadow-md transition-all duration-300 transform active:scale-[0.99]">
+                Search Appointment
+            </button>
+        </form>
+
+        <div id="loading-indicator" class="htmx-indicator flex justify-center items-center gap-2 text-slate-400 text-xs">
+            <svg class="animate-spin h-4 w-4 text-indigo-600" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            Searching in database...
+        </div>
+    </div>
+
+    <div id="result-container" class="transition-all duration-500 ease-in-out"></div>
+
+</div>
+<style>
+    .input {
+        width: 100%;
+        background-color: #ffffff !important; 
+        border-radius: 0.75rem;
+        border: 1px solid #cbd5e1;            
+        padding: 0.75rem;
+        font-size: 1.125rem;                  
+        font-weight: 700;                     
+        transition: all 0.2s;
+    }
+    
+  
+    .input::placeholder {
+        color: #94a3b8 !important;            
+        font-weight: 500;
+        font-size: 0.95rem;
+        letter-spacing: 0.025em;
+    }
+
+    .input:focus {
+        outline: none;
+        border-color: #4f46e5;               
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+
+    .htmx-indicator { display: none; }
+    .htmx-request .htmx-indicator { display: flex; }
+    .htmx-request.htmx-indicator { display: flex; }
+</style>
+{% endblock %}
