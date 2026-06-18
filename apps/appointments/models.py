@@ -1,5 +1,6 @@
 from django.db import models
 from apps.accounts.models import AppUser
+from datetime import datetime, date, timedelta
 
 class StatusAppointment(models.TextChoices):
     SCHEDULED = 'scheduled', 'Scheduled'
@@ -14,7 +15,6 @@ class PaymentMethod(models.TextChoices):
     DEBIT_CARD = 'debit_card', 'Debit Card'
 
 
-# 📅 NUEVO: Define el horario de apertura y cierre de la barbería por cada día de la semana
 class BarberSchedule(models.Model):
     DAY_CHOICES = [
         (0, 'Monday'),
@@ -61,3 +61,12 @@ class Appointment(models.Model):
     def __str__(self):
         identificador = self.customer.username if self.customer else f"Guest: {self.guest_name}"
         return f"{identificador} - {self.appointment_date} @ {self.appointment_time}"
+    
+    @property
+    def end_time(self):
+        start_datetime = datetime.combine(
+            date.today(),
+            self.appointment_time
+        )
+
+        return (start_datetime + timedelta(hours=1)).time()

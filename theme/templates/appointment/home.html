@@ -3,11 +3,11 @@
 {% block title %}Welcome - Barber & Studio{% endblock %}
 
 {% block content %}
-<div class="min-h-[80vh] flex flex-col justify-center items-center py-10 animate-fade-in">
+<div class="min-h-[85vh] flex flex-col justify-center items-center py-12 animate-fade-in">
 
-    <!-- 🌌 HERO SECTION: Encabezado minimalista -->
-    <div class="text-center max-w-2xl mx-auto mb-16 space-y-4 px-4">
-        <span class="text-xs font-bold tracking-widest text-indigo-400 uppercase bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
+    <!-- 🌌 HERO SECTION -->
+    <div class="text-center max-w-2xl mx-auto mb-12 lg:mb-16 space-y-4 px-6">
+        <span class="inline-block text-[10px] sm:text-xs font-bold tracking-widest text-indigo-500 uppercase bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
             Premium Grooming Experience
         </span>
         <h1 class="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
@@ -18,66 +18,62 @@
         </p>
     </div>
 
-    <!-- 🎛️ THE 3 ACTION BUTTONS (Grid de 3 Columnas) -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl px-4">
+    <!-- 🎛️ THE 3 ACTION BUTTONS (Responsividad Avanzada) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl px-6">
         
-        <!-- CARD 1:
-        BOOK APPOINTMENT -->
-        <a href="#" 
-           class="group bg-white border border-slate-100 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-indigo-500 transition-all duration-300 flex flex-col justify-between h-64">
+        <!-- CARD 1: BOOK APPOINTMENT -->
+        <a href="{% url 'appointments:book' %}" 
+           class="group bg-white border border-slate-200/60 rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-xl hover:border-indigo-500 transition-all duration-300 flex flex-col justify-between min-h-[15rem] sm:min-h-[16rem]">
             <div class="space-y-4">
                 <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-xl font-bold group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
                     ✂️
                 </div>
-                <h3 class="text-xl font-bold text-slate-800 tracking-tight group-hover:text-indigo-600 transition-colors">
+                <h3 class="text-lg sm:text-xl font-bold text-slate-800 tracking-tight group-hover:text-indigo-600 transition-colors">
                     Book Appointment
                 </h3>
                 <p class="text-slate-400 text-xs leading-relaxed">
                     Select your service, choose an available time slot, and lock your spot instantly.
                 </p>
             </div>
-            <div class="text-indigo-600 text-sm font-semibold tracking-wide flex items-center gap-1 mt-4 group-hover:translate-x-1 transition-transform">
+            <div class="text-indigo-600 text-sm font-semibold tracking-wide flex items-center gap-1 mt-6 group-hover:translate-x-1 transition-transform">
                 Book now <span class="text-xs">→</span>
             </div>
         </a>
 
-        <!-- CARD 2:  
-        CHECK APPOINTMENT -->
+        <!-- CARD 2: CHECK APPOINTMENT -->
         <a href="{% url "appointments:check" %}" 
-           class="group bg-white border border-slate-100 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-amber-500 transition-all duration-300 flex flex-col justify-between h-64">
+           class="group bg-white border border-slate-200/60 rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-xl hover:border-amber-500 transition-all duration-300 flex flex-col justify-between min-h-[15rem] sm:min-h-[16rem]">
             <div class="space-y-4">
                 <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-xl font-bold group-hover:scale-110 group-hover:bg-amber-600 group-hover:text-white transition-all duration-300">
                     🔍
                 </div>
-                <h3 class="text-xl font-bold text-slate-800 tracking-tight group-hover:text-amber-600 transition-colors">
+                <h3 class="text-lg sm:text-xl font-bold text-slate-800 tracking-tight group-hover:text-amber-600 transition-colors">
                     Check My Appointment
                 </h3>
                 <p class="text-slate-400 text-xs leading-relaxed">
                     Forgot your time? Enter your phone number or appointment code to verify details.
                 </p>
             </div>
-            <div class="text-amber-600 text-sm font-semibold tracking-wide flex items-center gap-1 mt-4 group-hover:translate-x-1 transition-transform">
+            <div class="text-amber-600 text-sm font-semibold tracking-wide flex items-center gap-1 mt-6 group-hover:translate-x-1 transition-transform">
                 Lookup <span class="text-xs">→</span>
             </div>
         </a>
 
-        <!-- CARD 3:
-         
-        AVAILABLE SLOTS -->
-        <a href="#" 
-           class="group bg-white border border-slate-100 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500 transition-all duration-300 flex flex-col justify-between h-64">
+        <!-- CARD 3: AVAILABLE SLOTS -->
+        <a href="{% url 'appointments:book' %}" 
+           class="group bg-white border border-slate-200/60 rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-xl hover:border-emerald-500 transition-all duration-300 flex flex-col justify-between min-h-[15rem] sm:min-h-[16rem] sm:col-span-2 lg:col-span-1">
             <div class="space-y-4">
                 <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl font-bold group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
                     🗓️
                 </div>
-                <h3 class="text-xl font-bold text-slate-800 tracking-tight group-hover:text-emerald-600 transition-colors">
+                <h3 class="text-lg sm:text-xl font-bold text-slate-800 tracking-tight group-hover:text-emerald-600 transition-colors">
                     Available Hours
                 </h3>
                 <p class="text-slate-400 text-xs leading-relaxed">
                     Take a quick live glance at this week's open hours before making a choice.
                 </p>
             </div>
-            <div class="text-emerald-600 text-sm font-semibold tracking-wide flex items-center gap-1 mt-4 group-hover:translate-x-1 transition-transform">
+            <div class="text-emerald-600 text-sm font-semibold tracking-wide flex items-center gap-1 mt-6 group-hover:translate-x-1 transition-transform">
                 View calendar <span class="text-xs">→</span>
             </div>
         </a>
@@ -85,7 +81,7 @@
     </div>
 
     <!-- ⚙️ DISCREET STAFF ACCESS -->
-    <div class="mt-16 text-center">
+    <div class="mt-16 text-center px-4">
         <p class="text-xs text-slate-400">
             Are you part of the team? 
             <a href="{% url 'accounts:login' %}" class="text-slate-600 hover:text-indigo-600 font-semibold underline transition-colors ml-1">

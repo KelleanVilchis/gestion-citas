@@ -16,7 +16,12 @@
                     <span class="text-2xl">📅</span>
                     <span class="text-lg font-bold text-slate-900 tracking-tight">BarberShop - Agenda tus Citas</span>
                 </div>
-                
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="{% url 'accounts:user_list' %}" class="text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors">Usuarios</a>
+                    <a href="{% url 'accounts:login' %}" class="text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors">Login</a>
+                    <a href="{% url 'appointments:appointment_list' %}" class="text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors">Citas</a>
+                    <a href="{% url 'appointments:home' %}" class="text-sm font-medium text-slate-700 hover:text-slate-900 transition-colors">Inicio Citas</a>
+                </div>
                 {% if request.user.is_authenticated %}
                     <div class="flex items-center space-x-4">
                         <div class="text-right hidden sm:block">
